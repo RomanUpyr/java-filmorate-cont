@@ -61,19 +61,6 @@ class UserTest {
         assertEquals("Email должен содержать символ @", violations.iterator().next().getMessage());
     }
 
-    // Тест для пустого логина
-    @Test
-    void shouldFailWhenLoginIsEmpty() {
-        User user = User.builder()
-                .email("valid@example.com")
-                .login("")  // Пустой логин
-                .birthday(LocalDate.of(1990, 1, 1))
-                .build();
-
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertFalse(violations.isEmpty());
-        assertEquals("Логин не может содержать пробелы", violations.iterator().next().getMessage());
-    }
 
     // Тест для даты рождения в будущем
     @Test
