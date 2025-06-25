@@ -72,7 +72,7 @@ class UserTest {
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertFalse(violations.isEmpty());
-        assertEquals("Логин не может быть пустым", violations.iterator().next().getMessage());
+        assertEquals("Логин не может содержать пробелы", violations.iterator().next().getMessage());
     }
 
     // Тест для логина с пробелами
