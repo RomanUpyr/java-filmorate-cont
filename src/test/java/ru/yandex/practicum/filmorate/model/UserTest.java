@@ -75,20 +75,6 @@ class UserTest {
         assertEquals("Логин не может содержать пробелы", violations.iterator().next().getMessage());
     }
 
-    // Тест для логина с пробелами
-    @Test
-    void shouldFailWhenLoginHasSpaces() {
-        User user = User.builder()
-                .email("valid@example.com")
-                .login("login with spaces")  // Пробелы в логине
-                .birthday(LocalDate.of(1990, 1, 1))
-                .build();
-
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertFalse(violations.isEmpty());
-        assertEquals("Логин не может содержать пробелы", violations.iterator().next().getMessage());
-    }
-
     // Тест для даты рождения в будущем
     @Test
     void shouldFailWhenBirthdayInFuture() {
