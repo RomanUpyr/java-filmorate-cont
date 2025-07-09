@@ -25,7 +25,7 @@ public class FilmService {
         Film film = getFilmById(filmId);
         if (!userStorage.containsUser(userId)) {
             log.warn("Пользователь с id={} не найден при попытке поставить лайк фильму id={}", userId, filmId);
-            throw new NotFoundException("Пользователь с id=" + userId + " не найден");
+            throw new NotFoundException("Пользователь с id=" + userId + " не найден!");
         }
         film.getLikes().add(userId);
         log.debug("Пользователь id={} поставил лайк фильму id={}", userId, filmId);
