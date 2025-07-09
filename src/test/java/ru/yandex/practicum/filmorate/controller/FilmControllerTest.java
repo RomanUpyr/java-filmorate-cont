@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -17,13 +17,11 @@ class FilmControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void shouldRejectInvalidFilm() throws Exception {
-        String invalidFilmJson = "{ \"name\": \"\", \"description\": \"A".repeat(201) + "\", " +
-                "\"releaseDate\": \"1890-01-01\", \"duration\": -10 }";
-
-        mockMvc.perform(post("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidFilmJson))
-                .andExpect(status().isBadRequest());
+    void shouldReturnNotFoundForNonExistentFilm() throws Exception {
+        mockMvc.perform(get("/films/9999"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Not found"));
     }
+
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Класс, представляющий фильм в системе.
@@ -26,4 +28,6 @@ public class Film {
 
     @Positive(message = "Продолжительность должна быть положительным числом")
     private Integer duration;      // Продолжительность фильма в минутах
+
+    private final Set<Integer> likes = new HashSet<>();
 }

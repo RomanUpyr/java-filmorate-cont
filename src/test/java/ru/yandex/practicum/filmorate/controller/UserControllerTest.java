@@ -18,14 +18,11 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void shouldRejectInvalidUser() throws Exception {
-        String invalidUserJson = "{ \"email\": \"invalid\", \"login\": \"\", \"birthday\": \"2030-01-01\" }";
-
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidUserJson))
+    void shouldReturnNotFoundForNonExistentUser() throws Exception {
+        mockMvc.perform(get("/users/9999"))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Not found"));
     }
 
     @Test
