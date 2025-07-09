@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
@@ -35,19 +36,32 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
         log.info("Получен запрос на создание пользователя: {}", user);
+
+        if (bindingResult.hasErrors()) {
+            log.warn("Ошибки валидации при создании пользователя: {}", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
         User createdUser = userService.addUser(user);
         log.debug("Пользователь успешно создан: {}", createdUser);
-        return createdUser;
+        return ResponseEntity.ok(createdUser);
     }
 
+
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult bindingResult) {
         log.info("Получен запрос на обновление пользователя с ID {}: {}", user.getId(), user);
+
+        if (bindingResult.hasErrors()) {
+            log.warn("Ошибки валидации при обновлении пользователя: {}", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
         User updatedUser = userService.updateUser(user);
         log.debug("Пользователь успешно обновлён: {}", updatedUser);
-        return updatedUser;
+        return ResponseEntity.ok(updatedUser);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
