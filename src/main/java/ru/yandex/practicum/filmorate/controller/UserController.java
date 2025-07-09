@@ -36,32 +36,20 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public User createUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на создание пользователя: {}", user);
-
-        if (bindingResult.hasErrors()) {
-            log.warn("Ошибки валидации при создании пользователя: {}", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-
         User createdUser = userService.addUser(user);
         log.debug("Пользователь успешно создан: {}", createdUser);
-        return ResponseEntity.ok(createdUser);
+        return createdUser;
+
     }
 
-
     @PutMapping
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public User updateUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на обновление пользователя с ID {}: {}", user.getId(), user);
-
-        if (bindingResult.hasErrors()) {
-            log.warn("Ошибки валидации при обновлении пользователя: {}", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-
         User updatedUser = userService.updateUser(user);
         log.debug("Пользователь успешно обновлён: {}", updatedUser);
-        return ResponseEntity.ok(updatedUser);
+        return updatedUser;
     }
 
     @PutMapping("/{id}/friends/{friendId}")

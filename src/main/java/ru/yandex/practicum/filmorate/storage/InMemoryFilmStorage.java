@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
@@ -45,6 +46,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public boolean containsFilm(int id) {
         return films.containsKey(id);
+    }
+
+    @Override
+    public List<Film> getPopularFilms(int count) {
+        return films.values().stream()
+                .sorted((f1, f2) -> Integer.compare(f2.getLikes().size(), f1.getLikes().size()))
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
     private int getNextId() {
