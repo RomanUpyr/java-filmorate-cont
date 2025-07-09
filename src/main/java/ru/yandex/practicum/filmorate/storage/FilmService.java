@@ -11,14 +11,19 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage) {
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
     }
 
     public void addLike(int filmId, int userId) {
         Film film = getFilmById(filmId);
+        if (!userStorage.containsUser(userId)) {
+            throw new NotFoundException("Пользователь с id=" + userId + " не найден");
+        }
         film.getLikes().add(userId);
     }
 
