@@ -30,4 +30,23 @@ public class Film {
     private Integer duration;      // Продолжительность фильма в минутах
 
     private final Set<Integer> likes = new HashSet<>();
+
+    private Mpa mpa;
+    private Set<Genre> genres = new HashSet<>();
+
+    /**
+     * Добавляет жанр к фильму
+     * @param genre объект жанра для добавления
+     */
+    public void addGenre(Genre genre) {
+        genres.add(genre);
+    }
+
+    /**
+     * Удаляет жанр из фильма
+     * @param genre объект жанра для удаления
+     */
+    public void removeGenre(Genre genre) {
+        genres.remove(genre);
+    }
 }

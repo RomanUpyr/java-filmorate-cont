@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.Builder;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Класс, представляющий пользователя в системе.
@@ -31,5 +31,35 @@ public class User {
     @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday; // Дата рождения пользователя
 
-    private final Set<Integer> friends = new HashSet<>();
+    private Map<Integer, FriendshipStatus> friends = new HashMap<>();
+
+    /**
+     * Добавляет друга с указанным статусом
+     * @param friendId ID пользователя-друга
+     * @param status статус дружеских отношений
+     */
+    public void addFriend(int friendId, FriendshipStatus status) {
+        friends.put(friendId, status);
+    }
+
+    /**
+     * Удаляет друга
+     * @param friendId ID пользователя-друга
+     */
+    public void removeFriend(int friendId) {
+        friends.remove(friendId);
+    }
+
+    /**
+     * Обновляет статус дружбы
+     * @param friendId ID пользователя-друга
+     * @param status новый статус дружбы
+     * @throws IllegalArgumentException если указанный друг не найден
+     */
+    public void updateFriendshipStatus(int friendId, FriendshipStatus status) {
+        if (!friends.containsKey(friendId)) {
+            throw new IllegalArgumentException("Друг с ID " + friendId + " не найден");
+        }
+        friends.put(friendId, status);
+    }
 }
