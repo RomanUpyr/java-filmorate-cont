@@ -21,6 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Основные операции с пользователями
     @GetMapping
     public List<User> getAllUsers() {
         log.info("Получен запрос на получение всех пользователей");
@@ -36,41 +37,50 @@ public class UserController {
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на создание пользователя: {}", user);
-        User createdUser = userService.addUser(user);
-        log.debug("Пользователь успешно создан: {}", createdUser);
-        return createdUser;
-
+        return userService.addUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на обновление пользователя с ID {}: {}", user.getId(), user);
-        User updatedUser = userService.updateUser(user);
-        log.debug("Пользователь успешно обновлён: {}", updatedUser);
-        return updatedUser;
+        return userService.updateUser(user);
     }
 
+    // Расширенные операции с друзьями
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable int id, @PathVariable int friendId) {
-        log.info("Получен запрос на добавление в друзья: пользователь {} добавляет пользователя {}", id, friendId);
-        userService.addFriend(id, friendId);
+        log.info("Получен запрос на добавление в друзья: {} -> {}", id, friendId);
+        userService.sendFriendRequest(id, friendId);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}/confirm")
+    public void confirmFriend(@PathVariable int id, @PathVariable int friendId) {
+        log.info("Получен запрос на подтверждение дружбы: {} подтверждает {}", id, friendId);
+        userService.confirmFriendship(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
-        log.info("Получен запрос на удаление из друзей: пользователь {} удаляет пользователя {}", id, friendId);
+        log.info("Получен запрос на удаление из друзей: {} удаляет {}", id, friendId);
         userService.removeFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getFriends(@PathVariable int id) {
-        log.info("Получен запрос на получение друзей пользователя с id={}", id);
-        return userService.getFriends(id);
+        log.info("Получен запрос на получение друзей пользователя {}", id);
+        return userService.getFriendsByStatus(id, "CONFIRMED");
+    }
+
+    @GetMapping("/{id}/friends/pending")
+    public List<User> getPendingFriends(@PathVariable int id) {
+        log.info("Получен запрос на получение ожидающих подтверждения друзей {}", id);
+        return userService.getFriendsByStatus(id, "PENDING");
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
-        log.info("Получен запрос на получение общих друзей пользователей {} и {}", id, otherId);
+        log.info("Получен запрос на общих друзей {} и {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }
 }
+
