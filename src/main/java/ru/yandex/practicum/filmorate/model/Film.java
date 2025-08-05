@@ -38,7 +38,7 @@ public class Film {
     private Set<Genre> genres = new HashSet<>();
 
     /**
-     * Добавляет жанр к фильму
+     * Добавляет к фильму жанр
      *
      * @param genreId ID жанра для добавления
      */
