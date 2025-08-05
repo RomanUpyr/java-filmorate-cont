@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcFriendshipStatusRepository implements FriendshipStatusRepository{
+public class JdbcFriendshipStatusRepository implements FriendshipStatusRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
