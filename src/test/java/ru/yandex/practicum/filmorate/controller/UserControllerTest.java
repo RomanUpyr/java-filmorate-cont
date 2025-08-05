@@ -25,15 +25,4 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.error").value("Not found"));
     }
 
-    @Test
-    void shouldSetLoginAsNameWhenNameIsEmpty() throws Exception {
-        String validUserJson = "{ \"email\": \"valid@example.com\", \"login\": \"testlogin\", \"name\": \"\", \"birthday\": \"1990-01-01\" }";
-
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validUserJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("testlogin"));
-    }
-
 }

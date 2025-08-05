@@ -8,15 +8,16 @@ import lombok.Data;
  */
 @Data
 public class Genre {
-    private int id;       // Уникальный идентификатор жанра
+    private Integer id;       // Уникальный идентификатор жанра
     private String name;  // Название жанра
 
     /**
      * Конструктор для создания объекта жанра
-     * @param id уникальный идентификатор жанра
+     *
+     * @param id   уникальный идентификатор жанра
      * @param name название жанра
      */
-    public Genre(int id, String name) {
+    public Genre(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

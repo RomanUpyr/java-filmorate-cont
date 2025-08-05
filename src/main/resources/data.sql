@@ -15,10 +15,9 @@ MERGE INTO genre (id, name) VALUES
 (5, 'Документальный'),
 (6, 'Боевик');
 
--- Инициализация статусов дружбы
-MERGE INTO friendship_status (id, name, description) VALUES
-(1, 'PENDING', 'Неподтверждённая'),
-(2, 'CONFIRMED', 'Подтверждённая');
+MERGE INTO friendship_status (id, name) VALUES
+(1, 'PENDING'),
+(2, 'CONFIRMED');
 
 -- Добавление тестовых пользователей
 MERGE INTO users (id, email, login, name, birthday) VALUES
@@ -56,14 +55,14 @@ MERGE INTO likes (film_id, user_id) VALUES
 (6, 1), (6, 3);           -- 2 лайка "Джентельмены"
 
 -- Установление дружеских связей
-MERGE INTO friendship (user_id, friend_id, status_id, created_at) VALUES
-(1, 2, 2, '2023-01-10 10:00:00'),  -- Иван и Мария - подтверждённые друзья
-(2, 1, 2, '2023-01-10 10:00:00'),  -- Обратная связь
-(1, 3, 1, '2023-02-15 11:30:00'),  -- Иван отправил заявку Алексею (неподтверждённая)
-(4, 5, 2, '2023-03-20 09:15:00'),  -- Елена и Дмитрий - подтверждённые друзья
-(5, 4, 2, '2023-03-20 09:15:00'),  -- Обратная связь
-(2, 4, 1, '2023-04-05 14:20:00');  -- Мария отправила заявку Елене (неподтверждённая)
+MERGE INTO friendship (user_id, friend_id, status_id) VALUES
+(1, 2, 2),  -- Иван и Мария - подтверждённые друзья
+(2, 1, 2),  -- Обратная связь
+(1, 3, 1),  -- Иван отправил заявку Алексею (неподтверждённая)
+(4, 5, 2),  -- Елена и Дмитрий - подтверждённые друзья
+(5, 4, 2),  -- Обратная связь
+(2, 4, 1);  -- Мария отправила заявку Елене (неподтверждённая)
 
 -- Сброс sequence для автоинкремента (чтобы новые записи начинались с правильного ID)
-ALTER TABLE users ALTER COLUMN id RESTART WITH 6;
-ALTER TABLE films ALTER COLUMN id RESTART WITH 7;
+-- ALTER TABLE users ALTER COLUMN id RESTART WITH 6;
+-- ALTER TABLE films ALTER COLUMN id RESTART WITH 7;

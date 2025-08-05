@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS likes (
 CREATE TABLE IF NOT EXISTS friendship_status (
     id INTEGER PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
-    description VARCHAR(100) NOT NULL,
     CONSTRAINT uq_status_name UNIQUE (name)
 );
 
@@ -67,7 +66,6 @@ CREATE TABLE IF NOT EXISTS friendship (
     user_id INTEGER NOT NULL,
     friend_id INTEGER NOT NULL,
     status_id INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, friend_id),
     CONSTRAINT fk_friendship_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_friendship_friend FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE,

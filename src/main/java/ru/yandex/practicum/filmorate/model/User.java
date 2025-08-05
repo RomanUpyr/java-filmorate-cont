@@ -31,19 +31,25 @@ public class User {
     @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday; // Дата рождения пользователя
 
+    @Builder.Default
     private Map<Integer, FriendshipStatus> friends = new HashMap<>();
 
     /**
      * Добавляет друга с указанным статусом
+     *
      * @param friendId ID пользователя-друга
-     * @param status статус дружеских отношений
+     * @param status   статус дружеских отношений
      */
     public void addFriend(int friendId, FriendshipStatus status) {
+        if (friends == null) {
+            friends = new HashMap<>();
+        }
         friends.put(friendId, status);
     }
 
     /**
      * Удаляет друга
+     *
      * @param friendId ID пользователя-друга
      */
     public void removeFriend(int friendId) {
@@ -52,8 +58,9 @@ public class User {
 
     /**
      * Обновляет статус дружбы
+     *
      * @param friendId ID пользователя-друга
-     * @param status новый статус дружбы
+     * @param status   новый статус дружбы
      * @throws IllegalArgumentException если указанный друг не найден
      */
     public void updateFriendshipStatus(int friendId, FriendshipStatus status) {

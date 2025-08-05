@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
 import jakarta.validation.constraints.*;
-import lombok.Data;
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -14,6 +14,8 @@ import java.util.Set;
  */
 @Data
 @Builder
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Film {
     private Integer id;            // Уникальный идентификатор фильма
 
@@ -24,6 +26,7 @@ public class Film {
     private String description;    // Описание фильма
 
     @NotNull(message = "Дата релиза обязательна")
+    @PastOrPresent(message = "Дата релиза не может быть в будущем")
     private LocalDate releaseDate; // Дата выхода фильма
 
     @Positive(message = "Продолжительность должна быть положительным числом")
@@ -36,17 +39,19 @@ public class Film {
 
     /**
      * Добавляет жанр к фильму
-     * @param genre объект жанра для добавления
+     *
+     * @param genreId ID жанра для добавления
      */
-    public void addGenre(Genre genre) {
-        genres.add(genre);
+    public void addGenre(Integer genreId) {
+        genres.add(new Genre(genreId, ""));
     }
 
     /**
      * Удаляет жанр из фильма
-     * @param genre объект жанра для удаления
+     *
+     * @param genreId ID жанра для удаления
      */
-    public void removeGenre(Genre genre) {
-        genres.remove(genre);
+    public void removeGenre(Integer genreId) {
+        genres.removeIf(g -> Objects.equals(g.getId(), genreId));
     }
 }
