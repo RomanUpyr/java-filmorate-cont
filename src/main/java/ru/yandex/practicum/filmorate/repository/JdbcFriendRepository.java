@@ -219,7 +219,7 @@ public class JdbcFriendRepository implements FriendRepository {
                         .orElseThrow(() -> new IllegalStateException("Status not found: " + statusName));
                 user.getFriends().put(user.getId(), status);
             }
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
 
         }
 
