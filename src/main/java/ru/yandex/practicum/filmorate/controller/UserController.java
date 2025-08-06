@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -17,33 +18,25 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
     private final FriendshipStatusRepository statusRepository;
     private final FriendService friendService;
 
-    public UserController(UserService userService, FriendshipStatusRepository statusRepository, FriendService friendService) {
-        this.userService = userService;
-        this.statusRepository = statusRepository;
-        this.friendService = friendService;
-    }
-
     // Основные операции с пользователями
     @GetMapping
     public List<User> getAllUsers() {
-        log.info("Получен запрос на получение всех пользователей");
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable int id) {
-        log.info("Получен запрос на получение пользователя с id={}", id);
         return userService.findById(id);
     }
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        log.info("Получен запрос на создание пользователя: {}", user);
         // Если имя не указано, используем логин
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
@@ -53,14 +46,12 @@ public class UserController {
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        log.info("Получен запрос на обновление пользователя с ID {}: {}", user.getId(), user);
         return userService.update(user);
     }
 
     // Расширенные операции с друзьями
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable int id, @PathVariable int friendId) {
-        log.info("Получен запрос на добавление в друзья: {} -> {}", id, friendId);
         friendService.addFriend(id, friendId);
     }
 
@@ -82,13 +73,11 @@ public class UserController {
 
     @PutMapping("/{id}/friends/{friendId}/confirm")
     public void confirmFriend(@PathVariable int id, @PathVariable int friendId) {
-        log.info("Получен запрос на подтверждение дружбы: {} подтверждает {}", id, friendId);
         friendService.confirmFriendship(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
-        log.info("Получен запрос на удаление из друзей: {} удаляет {}", id, friendId);
         friendService.removeFriend(id, friendId);
     }
 

@@ -72,8 +72,8 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already exists");
         }
-        if (userRepository.existsByLogin(user.getLogin())) {
-            throw new ValidationException("Login already exists");
+        if (userRepository.existsById(user.getId())) {
+            throw new ValidationException("Id already exists");
         }
     }
 

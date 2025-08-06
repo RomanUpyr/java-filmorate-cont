@@ -132,8 +132,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean existsByLogin(String login) {
-        String sql = "SELECT EXISTS(SELECT 1 FROM users WHERE login = ?)";
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, login));
+    public boolean existsById(Integer id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM users WHERE id = ?)";
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, id));
     }
 }

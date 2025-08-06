@@ -4,6 +4,7 @@ package ru.yandex.practicum.filmorate.model;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.Builder;
+import ru.yandex.practicum.filmorate.exception.FriendNotFoundException;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -61,11 +62,11 @@ public class User {
      *
      * @param friendId ID пользователя-друга
      * @param status   новый статус дружбы
-     * @throws IllegalArgumentException если указанный друг не найден
+     * @throws FriendNotFoundException если указанный друг не найден
      */
     public void updateFriendshipStatus(int friendId, FriendshipStatus status) {
         if (!friends.containsKey(friendId)) {
-            throw new IllegalArgumentException("Друг с ID " + friendId + " не найден");
+            throw new FriendNotFoundException("Друг с ID " + friendId + " не найден");
         }
         friends.put(friendId, status);
     }

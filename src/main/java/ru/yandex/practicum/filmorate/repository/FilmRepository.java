@@ -73,4 +73,6 @@ public interface FilmRepository {
     List<Film> getPopularFilms(int count);
 
     boolean hasLike(Integer filmId, Integer userId);
+
+    boolean existsById(Integer filmId);
 }

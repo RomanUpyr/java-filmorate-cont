@@ -21,11 +21,23 @@ public class FriendshipStatusInitializer {
                 new FriendshipStatus(2, "CONFIRMED")
         );
 
-        for (FriendshipStatus status : defaultStatuses) {
-            if (statusRepository.findById(status.getId()).isEmpty()) {
-                String sql = "INSERT INTO friendship_status (id, name) VALUES (?, ?)";
-                jdbcTemplate.update(sql, status.getId(), status.getName());
-            }
+        List<FriendshipStatus> existingStatuses = statusRepository.findAll();
+        List<FriendshipStatus> statusesToInsert = defaultStatuses.stream()
+                .filter(status -> existingStatuses.stream()
+                        .noneMatch(existing -> existing.getId() == status.getId()))
+                .toList();
+
+        if (!statusesToInsert.isEmpty()) {
+
+            jdbcTemplate.batchUpdate(
+                    "INSERT INTO friendship_status (id, name) VALUES (?, ?)",
+                    statusesToInsert,
+                    statusesToInsert.size(),
+                    (ps, status) -> {
+                        ps.setInt(1, status.getId());
+                        ps.setString(2, status.getName());
+                    }
+            );
         }
     }
 }

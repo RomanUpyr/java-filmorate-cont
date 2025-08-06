@@ -186,4 +186,12 @@ public class JdbcFilmRepository implements FilmRepository {
                 userId
         ));
     }
+
+    @Override
+    public boolean existsById(Integer filmId) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM films WHERE id = ?)";
+        return Boolean.TRUE.equals(
+                jdbcTemplate.queryForObject(sql, Boolean.class, filmId)
+        );
+    }
 }

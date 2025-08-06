@@ -50,6 +50,6 @@ public interface UserRepository {
 
     boolean existsByEmail(String email);
 
-    boolean existsByLogin(String login);
+    boolean existsById(Integer id);
 
 }

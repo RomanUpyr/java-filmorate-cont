@@ -148,13 +148,11 @@ public class JdbcFriendRepository implements FriendRepository {
     public List<User> getFriends(Integer userId) {
         String sql = "SELECT u.* FROM users u " +
                 "JOIN friendship f ON u.id = f.friend_id " +
-                "WHERE f.user_id = ? AND f.status_id = ?"; // Добавлен статус
+                "WHERE f.user_id = ? AND f.status_id = (" +
+                "   SELECT id FROM friendship_status WHERE name = 'CONFIRMED'" +
+                ")";
 
-        Integer confirmedStatusId = statusRepository.findByName("CONFIRMED")
-                .orElseThrow(() -> new IllegalStateException("CONFIRMED status not found"))
-                .getId();
-
-        return jdbcTemplate.query(sql, this::mapRowToUser, userId, confirmedStatusId);
+        return jdbcTemplate.query(sql, this::mapRowToUser, userId);
     }
 
     @Override
