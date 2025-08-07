@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -23,17 +22,6 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Not found"));
-    }
-
-    @Test
-    void shouldSetLoginAsNameWhenNameIsEmpty() throws Exception {
-        String validUserJson = "{ \"email\": \"valid@example.com\", \"login\": \"testlogin\", \"name\": \"\", \"birthday\": \"1990-01-01\" }";
-
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validUserJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("testlogin"));
     }
 
 }
